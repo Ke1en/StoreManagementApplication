@@ -97,6 +97,48 @@ public class StoreServiceTest extends TestContainerInitialization {
     @Test
     void updateStore_whenStoreExist_thenUpdateStore() {
 
+        Store store = createStore("Пятерочка", "Ленина");
+
+        StoreRequest storeRequest = createStoreRequest("Яр", "Лермонтова");
+
+        StoreResponseDto storeResponseDto = Assertions.assertDoesNotThrow(() -> storeService.updateStoreById(store.getId(), storeRequest));
+        Assertions.assertEquals(storeRequest.getName(), storeResponseDto.getName());
+
+    }
+
+    @Test
+    void deleteStore_whenStoreNotFoundById_thenThrowException() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> storeService.deleteStore(UUID.fromString("777777")));
+    }
+
+    @Test
+    void deleteStore_whenStoreExist_thenDeleteStore() {
+
+        Store store = createStore("Пятерочка", "Ленина");
+
+        Assertions.assertDoesNotThrow(() -> storeService.deleteStore(store.getId()));
+
+    }
+
+    @Test
+    void findById_whenStoreIdInvalid_thenThrowException() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> storeService.findById(UUID.fromString("777777")));
+    }
+
+    @Test
+    void findById_whenStoreNotFoundById_thenThrowException() {
+        Assertions.assertThrows(NoSuchElementException.class, () -> storeService.findById(UUID.randomUUID()));
+    }
+
+    @Test
+    void findById_whenStoreExist_thenGetStore() {
+
+        Store store = createStore("Пятерочка", "Ленина");
+
+        StoreResponseDto storeResponseDto = Assertions.assertDoesNotThrow(() -> storeService.findById(store.getId()));
+
+        Assertions.assertEquals(store.getName(), storeResponseDto.getName());
+
     }
 
     private Store createStore(String name, String location) {

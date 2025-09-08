@@ -40,9 +40,7 @@ public class StoreService {
 
     @Transactional(rollbackFor = Exception.class)
     public void deleteStore(UUID storeId) {
-
         storeRepository.deleteById(storeId);
-
     }
 
     public StoreResponseDto findById(UUID storeId) {
