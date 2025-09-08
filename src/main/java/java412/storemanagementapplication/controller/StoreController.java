@@ -20,7 +20,7 @@ public class StoreController {
     private StoreService storeService;
 
     @PostMapping
-    public ResponseEntity<StoreResponseDto> createStore(@Valid @RequestBody StoreRequest request) {
+    public ResponseEntity<StoreResponseDto> createStore(@RequestBody StoreRequest request) {
 
         StoreResponseDto storeResponseDto = storeService.createStore(request);
 
@@ -47,7 +47,7 @@ public class StoreController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<StoreResponseDto> updateStore(@PathVariable UUID id, @Valid @RequestBody StoreRequest request) {
+    public ResponseEntity<StoreResponseDto> updateStore(@PathVariable UUID id, @RequestBody StoreRequest request) {
 
         StoreResponseDto storeResponseDto = storeService.updateStoreById(id, request);
 
