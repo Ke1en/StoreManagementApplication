@@ -1,6 +1,5 @@
 package java412.storemanagementapplication.controller;
 
-import jakarta.validation.Valid;
 import java412.storemanagementapplication.dto.SupplierResponseDto;
 import java412.storemanagementapplication.request.SupplierRequest;
 import java412.storemanagementapplication.service.SupplierService;
