@@ -5,6 +5,7 @@ import java412.storemanagementapplication.dto.SupplierResponseDto;
 import java412.storemanagementapplication.entity.Supplier;
 import java412.storemanagementapplication.mapper.SupplierMapper;
 import java412.storemanagementapplication.repository.SupplierRepository;
+import java412.storemanagementapplication.request.SupplierContactRequest;
 import java412.storemanagementapplication.request.SupplierRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -84,4 +85,19 @@ public class SupplierService {
 
     }
 
+    @Transactional(rollbackFor = Exception.class)
+    public SupplierResponseDto updateContactById(UUID supplierId, SupplierContactRequest request) {
+
+        Supplier supplier = supplierRepository.findById(supplierId)
+                .orElseThrow();
+
+        supplier.setPhone(request.getPhone());
+        supplier.setEmail(request.getEmail());
+        supplier.setWebsite(request.getWebsite());
+
+        supplierRepository.save(supplier);
+
+        return supplierMapper.mapToSupplierResponseDto(supplier);
+
+    }
 }

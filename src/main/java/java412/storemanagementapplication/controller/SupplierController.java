@@ -1,6 +1,7 @@
 package java412.storemanagementapplication.controller;
 
 import java412.storemanagementapplication.dto.SupplierResponseDto;
+import java412.storemanagementapplication.request.SupplierContactRequest;
 import java412.storemanagementapplication.request.SupplierRequest;
 import java412.storemanagementapplication.service.SupplierService;
 import org.springframework.data.domain.Page;
@@ -58,6 +59,15 @@ public class SupplierController {
     @GetMapping("/suppliers")
     public Page<SupplierResponseDto> findSuppliers(@RequestParam(value = "q", required = false) String q, Pageable pageable) {
         return supplierService.findSuppliers(q, pageable);
+    }
+
+    @PatchMapping("/suppliers/{id}/contact")
+    public ResponseEntity<SupplierResponseDto> updateSupplierContactById(@PathVariable UUID id, @RequestBody SupplierContactRequest request) {
+
+        SupplierResponseDto supplierResponseDto = supplierService.updateContactById(id, request);
+
+        return ResponseEntity.ok(supplierResponseDto);
+
     }
 
 }

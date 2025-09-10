@@ -2,6 +2,8 @@ package java412.storemanagementapplication.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,9 +19,11 @@ public class SupplierContactRequest {
     @JsonProperty("phone")
     private String phone;
 
-    @Schema(description = "Адрес поставщика")
-    @JsonProperty("address")
-    private String address;
+    @Schema(description = "Электронная почта поставщика")
+    @JsonProperty("email")
+    @NotBlank
+    @Email(message = "Электронная почта должна быть валидной")
+    private String email;
 
     @Schema(description = "Вебсайт(URL) поставщика")
     @JsonProperty("website")
