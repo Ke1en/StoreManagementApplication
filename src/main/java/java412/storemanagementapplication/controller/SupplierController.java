@@ -20,7 +20,7 @@ public class SupplierController {
     @Autowired
     private SupplierService supplierService;
 
-    @PostMapping("/suppliers")
+    @PostMapping
     public ResponseEntity<SupplierResponseDto> createSupplier(@RequestBody SupplierRequest request) {
 
         SupplierResponseDto supplierResponseDto = supplierService.createSupplier(request);
@@ -29,7 +29,7 @@ public class SupplierController {
 
     }
 
-    @GetMapping("/suppliers/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<SupplierResponseDto> findSupplierById(@PathVariable UUID id) {
 
         SupplierResponseDto supplierResponseDto = supplierService.findById(id);
@@ -38,7 +38,7 @@ public class SupplierController {
 
     }
 
-    @PutMapping("/suppliers/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<SupplierResponseDto> updateSupplierById(@PathVariable UUID id, @RequestBody SupplierRequest request) {
 
         SupplierResponseDto supplierResponseDto = supplierService.updateById(id, request);
@@ -47,7 +47,7 @@ public class SupplierController {
 
     }
 
-    @DeleteMapping("/suppliers/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteSupplierById(@PathVariable UUID id) {
 
         supplierService.deleteSupplier(id);
@@ -56,12 +56,12 @@ public class SupplierController {
 
     }
 
-    @GetMapping("/suppliers")
+    @GetMapping
     public Page<SupplierResponseDto> findSuppliers(@RequestParam(value = "q", required = false) String q, Pageable pageable) {
         return supplierService.findSuppliers(q, pageable);
     }
 
-    @PatchMapping("/suppliers/{id}/contact")
+    @PatchMapping("/{id}/contact")
     public ResponseEntity<SupplierResponseDto> updateSupplierContactById(@PathVariable UUID id, @RequestBody SupplierContactRequest request) {
 
         SupplierResponseDto supplierResponseDto = supplierService.updateContactById(id, request);

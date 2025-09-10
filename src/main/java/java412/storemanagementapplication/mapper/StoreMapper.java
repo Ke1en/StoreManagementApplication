@@ -1,7 +1,9 @@
 package java412.storemanagementapplication.mapper;
 
 import java412.storemanagementapplication.dto.AllStoresResponseDto;
+import java412.storemanagementapplication.dto.ProductResponseDto;
 import java412.storemanagementapplication.dto.StoreResponseDto;
+import java412.storemanagementapplication.entity.Product;
 import java412.storemanagementapplication.entity.Store;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +16,10 @@ public class StoreMapper {
 
     public AllStoresResponseDto mapToAllStoresResponseDto(Store store) {
         return new AllStoresResponseDto(store.getId(), store.getName(), store.getLocation());
+    }
+
+    public ProductResponseDto mapToProductResponseDto(Product product) {
+        return new ProductResponseDto(product.getId(), product.getName(), product.getPrice(), product.getCategory());
     }
 
 }

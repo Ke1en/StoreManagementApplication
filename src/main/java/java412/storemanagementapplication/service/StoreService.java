@@ -2,9 +2,14 @@ package java412.storemanagementapplication.service;
 
 import jakarta.validation.Valid;
 import java412.storemanagementapplication.dto.AllStoresResponseDto;
+import java412.storemanagementapplication.dto.ProductResponseDto;
 import java412.storemanagementapplication.dto.StoreResponseDto;
+import java412.storemanagementapplication.entity.Product;
 import java412.storemanagementapplication.entity.Store;
+import java412.storemanagementapplication.entity.StoreProduct;
 import java412.storemanagementapplication.mapper.StoreMapper;
+import java412.storemanagementapplication.repository.ProductRepository;
+import java412.storemanagementapplication.repository.StoreProductRepository;
 import java412.storemanagementapplication.repository.StoreRepository;
 import java412.storemanagementapplication.request.StoreRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,6 +29,12 @@ public class StoreService {
 
     @Autowired
     private StoreRepository storeRepository;
+    
+    @Autowired
+    private StoreProductRepository storeProductRepository;
+    
+    @Autowired
+    private ProductRepository productRepository;
 
     @Autowired
     private StoreMapper storeMapper;
@@ -108,6 +120,45 @@ public class StoreService {
         storeRepository.saveAndFlush(copyStore);
 
         return storeMapper.mapToStoreResponseDto(copyStore);
+
+    }
+
+    public List<ProductResponseDto> findAllProductByLocation(String street) {
+        
+        // Шаг 1, получаем все магазины
+        List<Store> allStores = storeRepository.findAll();
+        // Шаг 2, фильтруем магазины по указанной улице
+        List<Store> storesOnStreet = new ArrayList<>();
+        
+        for (Store store : allStores) {
+            if (store.getLocation().contains(street) && store.getLocation() != null) {
+                storesOnStreet.add(store);
+            }
+        }
+        
+        List<ProductResponseDto> result = new ArrayList<>();
+        
+        // Шаг 3, собираем все товары из найденных магазинов
+        for (Store store : storesOnStreet) {
+            
+            List<StoreProduct> storeProduct = storeProductRepository.findByStoreId(store.getId());
+            
+            for (StoreProduct sp : storeProduct) {
+                
+                Product product = productRepository.findById(sp.getProductId())
+                        .orElseThrow();
+
+                ProductResponseDto productResponseDto = storeMapper.mapToProductResponseDto(product);
+
+                result.add(productResponseDto);
+
+            }
+
+        }
+
+        return result.stream()
+                .distinct()
+                .toList();
 
     }
 

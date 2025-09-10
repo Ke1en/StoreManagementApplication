@@ -86,8 +86,6 @@ public class StoreServiceTest extends TestContainerInitialization {
     @Test
     void updateStore_whenStoreNotFoundById_thenThrowException() {
 
-        createStore("Пятерочка", "Ленина");
-
         StoreRequest storeRequest = createStoreRequest("Яр", "Лермонтова");
 
         Assertions.assertThrows(NoSuchElementException.class, () -> storeService.updateStoreById(UUID.randomUUID(), storeRequest));

@@ -33,7 +33,7 @@ public class SupplierService {
 
         Supplier supplier = new Supplier(UUID.randomUUID(), request.getName(), request.getEmail(), request.getPhone(), request.getAddress(), request.getWebsite(), null);
 
-        supplierRepository.save(supplier);
+        supplierRepository.saveAndFlush(supplier);
 
         return supplierMapper.mapToSupplierResponseDto(supplier);
 
@@ -60,7 +60,7 @@ public class SupplierService {
         supplier.setAddress(request.getAddress());
         supplier.setWebsite(request.getWebsite());
 
-        supplierRepository.save(supplier);
+        supplierRepository.saveAndFlush(supplier);
 
         return supplierMapper.mapToSupplierResponseDto(supplier);
 
@@ -95,9 +95,10 @@ public class SupplierService {
         supplier.setEmail(request.getEmail());
         supplier.setWebsite(request.getWebsite());
 
-        supplierRepository.save(supplier);
+        supplierRepository.saveAndFlush(supplier);
 
         return supplierMapper.mapToSupplierResponseDto(supplier);
 
     }
+
 }
