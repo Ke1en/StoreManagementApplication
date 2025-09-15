@@ -6,7 +6,6 @@ import java412.storemanagementapplication.dto.ProductResponseDto;
 import java412.storemanagementapplication.dto.StoreResponseDto;
 import java412.storemanagementapplication.entity.Product;
 import java412.storemanagementapplication.entity.Store;
-import java412.storemanagementapplication.entity.StoreProduct;
 import java412.storemanagementapplication.mapper.StoreMapper;
 import java412.storemanagementapplication.repository.ProductRepository;
 import java412.storemanagementapplication.repository.StoreProductRepository;
@@ -18,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -30,10 +28,10 @@ public class StoreService {
 
     @Autowired
     private StoreRepository storeRepository;
-    
+
     @Autowired
     private StoreProductRepository storeProductRepository;
-    
+
     @Autowired
     private ProductRepository productRepository;
 
