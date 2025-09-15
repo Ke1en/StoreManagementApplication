@@ -21,6 +21,7 @@ import org.springframework.validation.annotation.Validated;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Validated
@@ -124,41 +125,18 @@ public class StoreService {
     }
 
     public List<ProductResponseDto> findAllProductByLocation(String street) {
-        
-        // Шаг 1, получаем все магазины
-        List<Store> allStores = storeRepository.findAll();
-        // Шаг 2, фильтруем магазины по указанной улице
-        List<Store> storesOnStreet = new ArrayList<>();
-        
-        for (Store store : allStores) {
-            if (store.getLocation().contains(street) && store.getLocation() != null) {
-                storesOnStreet.add(store);
-            }
-        }
-        
-        List<ProductResponseDto> result = new ArrayList<>();
-        
-        // Шаг 3, собираем все товары из найденных магазинов
-        for (Store store : storesOnStreet) {
-            
-            List<StoreProduct> storeProduct = storeProductRepository.findByStoreId(store.getId());
-            
-            for (StoreProduct sp : storeProduct) {
-                
-                Product product = productRepository.findById(sp.getProductId())
-                        .orElseThrow();
+        return storeRepository.findAll().stream()
+                .filter(store -> store.getLocation() != null && store.getLocation().contains(street))
+                .flatMap(store -> storeProductRepository.findByStoreId(store.getId()).stream()
+                        .map(storeProduct -> {
+                            Product product = productRepository.findById(storeProduct.getProductId())
+                                    .orElseThrow();
 
-                ProductResponseDto productResponseDto = storeMapper.mapToProductResponseDto(product);
-
-                result.add(productResponseDto);
-
-            }
-
-        }
-
-        return result.stream()
+                            return storeMapper.mapToProductResponseDto(product);
+                        })
+                )
                 .distinct()
-                .toList();
+                .collect(Collectors.toList());
 
     }
 
