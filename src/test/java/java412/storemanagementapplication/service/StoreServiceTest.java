@@ -5,6 +5,8 @@ import jakarta.validation.ConstraintViolationException;
 import java412.storemanagementapplication.TestContainerInitialization;
 import java412.storemanagementapplication.dto.StoreResponseDto;
 import java412.storemanagementapplication.entity.Store;
+import java412.storemanagementapplication.repository.ProductRepository;
+import java412.storemanagementapplication.repository.StoreProductRepository;
 import java412.storemanagementapplication.repository.StoreRepository;
 import java412.storemanagementapplication.request.StoreRequest;
 import org.junit.jupiter.api.AfterEach;
@@ -31,11 +33,19 @@ public class StoreServiceTest extends TestContainerInitialization {
     private StoreRepository storeRepository;
 
     @Autowired
+    private StoreProductRepository storeProductRepository;
+
+    @Autowired
     private StoreService storeService;
+    @Autowired
+    private ProductRepository productRepository;
 
     @AfterEach
     void clear() {
+
         storeRepository.deleteAll();
+        storeProductRepository.deleteAll();
+
     }
 
     @Test

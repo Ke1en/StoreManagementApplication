@@ -2,13 +2,9 @@ package java412.storemanagementapplication.service;
 
 import jakarta.validation.Valid;
 import java412.storemanagementapplication.dto.AllStoresResponseDto;
-import java412.storemanagementapplication.dto.ProductResponseDto;
 import java412.storemanagementapplication.dto.StoreResponseDto;
-import java412.storemanagementapplication.entity.Product;
 import java412.storemanagementapplication.entity.Store;
 import java412.storemanagementapplication.mapper.StoreMapper;
-import java412.storemanagementapplication.repository.ProductRepository;
-import java412.storemanagementapplication.repository.StoreProductRepository;
 import java412.storemanagementapplication.repository.StoreRepository;
 import java412.storemanagementapplication.request.StoreRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +15,6 @@ import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @Validated
@@ -28,12 +23,6 @@ public class StoreService {
 
     @Autowired
     private StoreRepository storeRepository;
-
-    @Autowired
-    private StoreProductRepository storeProductRepository;
-
-    @Autowired
-    private ProductRepository productRepository;
 
     @Autowired
     private StoreMapper storeMapper;
@@ -48,6 +37,7 @@ public class StoreService {
         return storeMapper.mapToStoreResponseDto(store);
 
     }
+
 
     @Transactional(rollbackFor = Exception.class)
     public void deleteStore(UUID storeId) {
@@ -119,22 +109,6 @@ public class StoreService {
         storeRepository.saveAndFlush(copyStore);
 
         return storeMapper.mapToStoreResponseDto(copyStore);
-
-    }
-
-    public List<ProductResponseDto> findAllProductByLocation(String street) {
-        return storeRepository.findAll().stream()
-                .filter(store -> store.getLocation() != null && store.getLocation().contains(street))
-                .flatMap(store -> storeProductRepository.findByStoreId(store.getId()).stream()
-                        .map(storeProduct -> {
-                            Product product = productRepository.findById(storeProduct.getProductId())
-                                    .orElseThrow();
-
-                            return storeMapper.mapToProductResponseDto(product);
-                        })
-                )
-                .distinct()
-                .collect(Collectors.toList());
 
     }
 

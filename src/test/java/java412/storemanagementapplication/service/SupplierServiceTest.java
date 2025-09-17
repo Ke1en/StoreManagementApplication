@@ -109,7 +109,7 @@ public class SupplierServiceTest extends TestContainerInitialization {
 
     @Test
     void deleteById_whenSupplierIdInvalid_thenThrowNoException() {
-
+    //TODO допилить тест
 
     }
 

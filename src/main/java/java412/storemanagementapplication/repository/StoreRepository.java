@@ -2,6 +2,7 @@ package java412.storemanagementapplication.repository;
 
 import java412.storemanagementapplication.entity.Store;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -9,5 +10,10 @@ import java.util.UUID;
 
 @Repository
 public interface StoreRepository extends JpaRepository<Store, UUID> {
+
     List<Store> findByLocation(String location);
+
+    @Query("SELECT COUNT(sp) FROM store_products sp WHERE sp.productId = :id")
+    int countStoresByProductId(UUID id);
+
 }

@@ -1,9 +1,6 @@
 package java412.storemanagementapplication.controller;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import java412.storemanagementapplication.dto.AllStoresResponseDto;
-import java412.storemanagementapplication.dto.ProductResponseDto;
 import java412.storemanagementapplication.dto.StoreResponseDto;
 import java412.storemanagementapplication.request.StoreRequest;
 import java412.storemanagementapplication.service.StoreService;
@@ -90,19 +87,6 @@ public class StoreController {
         StoreResponseDto copyStoreResponseDto = storeService.copy(id);
 
         return ResponseEntity.ok(copyStoreResponseDto);
-
-    }
-
-    @GetMapping("/product/by-location")
-    @Operation(summary = "Найти товары во всех магазинах на указанной улице",
-            description = "Все товары в магазинах на указанной улице")
-    public ResponseEntity<List<ProductResponseDto>> findAllProductByLocation(
-            @Parameter(description = "Название улицы") @RequestParam String location
-    ) {
-
-        List<ProductResponseDto> allProducts = storeService.findAllProductByLocation(location);
-
-        return ResponseEntity.ok(allProducts);
 
     }
 
